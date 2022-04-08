@@ -16,8 +16,21 @@ void BookDatabase::Add(string name, string author, string isbn, string publicati
     books_list[isbn] = book;
 }
 
-void BookDatabase::Update(Book book) {
-    
+void BookDatabase::Update(string isbn, string new_name, string new_author, string new_publication) {
+    if(!doExist(isbn)) throw "No book with the given ISBN exist";
+    books_list[isbn].SetParams(isbn, new_name, new_author, new_publication);
+}
+
+void BookDatabase::Delete(string isbn) {
+    if(!doExist(isbn)) throw "Book with the given ISBN doesn't exist";
+
+    books_list.erase(isbn);
+}
+
+void BookDatabase::ShowDetails(string isbn) {
+    if(!doExist(isbn)) throw "No book with the given ISBN exist";
+
+    books_list[isbn].ShowDetails(2);
 }
 
 void BookDatabase::ListAllBooks() {
@@ -35,3 +48,18 @@ void BookDatabase::ListAllBooks() {
     }
 }
 
+void BookDatabase::IssueBook(string id, int userType, string isbn) {
+
+    if(!doExist(isbn)) throw "No book with the given ISBN exist";
+
+    try {
+        books_list[isbn].book_request(id, userType);
+    }
+    catch(char* msg) {
+        throw msg;
+    }
+}
+
+Book BookDatabase::Search(string isbn) {
+    return books_list[isbn];
+}

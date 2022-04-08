@@ -1,20 +1,19 @@
+#pragma once
+
 #include <iostream> 
 #include<string>
 #include<vector>
 #include<unordered_map>
 #include<algorithm>
+#include "book.h"
 using namespace std; 
+
+#define MAX_STUDENT_BOOK_ISSUES 5
 
 class User {
     public:
         string name, id;
         int userType;
-
-        /*
-        User(string name, string id, string password, int userType) {
-            this->name = name; this->id = id; this->password = password; this->userType = userType;
-        }
-        */
 
         void SetPassword(string);
         bool VerifyPassword(string pwd_in) {
@@ -31,10 +30,6 @@ class User {
 
 class Librarian: public User {
     public:
-        /*
-        Librarian(string name, string id, string password, int userType): User(name, id, password, userType) {}
-        */
-
         void SetParams(string name, string id, string password, int userType) {
             this->name = name; this->id = id; this->password = password; this->userType = userType;
         }
@@ -52,31 +47,20 @@ class Professor: public User {
         int calculate_fine();
         friend class Librarian;
 
-        /*
-        Professor(string name, string id, string password, int userType): User(name, id, password, userType) {
-            fine_amount = 0; list_of_books.clear(); 
-        }
-        */
-
         void SetParams(string name, string id, string password, int userType) {
             this->name = name; this->id = id; this->password = password; this->userType = userType;
             fine_amount = 0; list_of_books.clear(); 
         }
 
-        void ShowDetails() {
-            cout << "User type - " << userType << endl;
-            cout << "User ID - " << id << endl;
-            cout << "Name of the User - " << name << endl;
-            cout << "List of books issued to the user - " << endl;
+        void ShowIssuedBooks();
 
-            for(auto book: list_of_books) {
-                cout << book << endl;
-            }
-        }
+        void ShowDetails();
+
+        void AddBook(Book);
 
     private: 
         int fine_amount;
-        vector<string> list_of_books;
+        vector<Book> list_of_books;
         void clear_fine_amount();
 };
 
@@ -85,31 +69,21 @@ class Student: public User {
         int calculate_fine();
         friend class Librarian;
 
-        /*
-        Student(string name, string id, string password, int userType): User(name, id, password, userType) {
-            fine_amount = 0; list_of_books.clear(); 
-        
-        }
-        */
-
         void SetParams(string name, string id, string password, int userType) {
             this->name = name; this->id = id; this->password = password; this->userType = userType;
             fine_amount = 0; list_of_books.clear(); 
         }
+        
+        void ShowIssuedBooks();
 
-        void ShowDetails() {
-            cout << "User type - " << userType << endl;
-            cout << "User ID - " << id << endl;
-            cout << "Name of the User - " << name << endl;
-            cout << "List of books issued to the user - " << endl;
+        void ShowDetails();
 
-            for(auto book: list_of_books) {
-                cout << book << endl;
-            }
-        }
+        bool CheckBookNums();
+
+        void AddBook(Book);
 
     private: 
-        int fine_amount;
-        vector<string> list_of_books;
+        int fine_amount, books_num;
+        vector<Book> list_of_books;
         void clear_fine_amount();
 };

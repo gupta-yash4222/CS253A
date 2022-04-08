@@ -139,6 +139,12 @@ bool UserDatabase::AuthenticateUser(string id, string password) {
     
 }
 
+int UserDatabase::GetUserType(string id) {
+    if(!doExist(id)) throw "No user with the given ID exists";
+
+    return users_list[id];
+}
+
 void UserDatabase::ShowDetails(string id) {
     switch(users_list[id]) {
         case 0: 
@@ -168,7 +174,7 @@ void UserDatabase::ListAllUsers() {
         cout << "Librarian #" << (count++) << endl;
         cout << "ID - " << itr->first << endl;
         cout << "Name - " << itr->second.name << endl;
-        cout << "\n------------------------------------------------------------\n" << endl;
+        cout << "\n" << endl;
     }
 
     cout << "------------------------------------------------------------\n" << endl;
@@ -183,8 +189,10 @@ void UserDatabase::ListAllUsers() {
         cout << "Professor #" << (count++) << endl;
         cout << "ID - " << itr->first << endl;
         cout << "Name - " << itr->second.name << endl;
-        cout << "\n------------------------------------------------------------\n" << endl;
+        cout << "\n" << endl;
     }
+
+    if(count == 1) cout << "No professors registered in the library.\n" << endl;
  
     cout << "------------------------------------------------------------\n" << endl;
 
@@ -198,8 +206,74 @@ void UserDatabase::ListAllUsers() {
         cout << "Student #" << (count++) << endl;
         cout << "ID - " << itr->first << endl;
         cout << "Name - " << itr->second.name << endl;
-        cout << "\n------------------------------------------------------------\n" << endl;
+        cout << "\n" << endl;
     }
 
+    if(count == 1) cout << "No students registered in the library.\n" << endl;
 
+}
+
+void UserDatabase::ShowIssuedBooks(string id) {
+    if(!doExist(id)) throw "No user with the given ID exists in the database";
+
+    switch(users_list[id]) {
+        case 0: {
+            students_list[id].ShowIssuedBooks();
+            break;
+        }
+
+        case 1: {
+            professors_list[id].ShowIssuedBooks();
+            break;
+        }
+
+        case 2: {
+            throw "When did librarians start issuing books huhh? They read them in library itself";
+        }
+    }
+}
+
+User* UserDatabase::Search(string id) {
+    if(!doExist(id)) throw "No user with the given ID exists in the database";
+
+    switch(users_list[id]) {
+        case 0: {
+            User* user = &students_list[id];
+            return user;
+        }
+
+        case 1: {
+            User* user = &professors_list[id];
+            return user;
+        }
+
+        case 2: {
+            User* user = &librarians_list[id];
+            return user;
+        }
+
+        default: 
+            break;
+    }
+
+    return NULL; 
+}
+
+void UserDatabase::AddBookToUser(string id, Book book) {
+    switch(users_list[id]) {
+        case 0: {
+            students_list[id].AddBook(book);
+            break;
+        }
+
+        case 1: {
+            professors_list[id].AddBook(book);
+            break;
+        }
+    }
+}
+bool UserDatabase::IsUserAllowedToIssue(string id) {
+    if(users_list[id] == 1) return true;
+
+    return students_list[id].CheckBookNums();
 }

@@ -11,7 +11,7 @@ book.o: book.h book.cpp
 bookDatabase.o: book.h bookDatabase.h bookDatabase.cpp
 	g++ -c bookDatabase.cpp
 
-user.o: user.h user.cpp
+user.o: book.h user.h user.cpp
 	g++ -c user.cpp
 
 userDatabase.o: user.h userDatabase.h userDatabase.cpp

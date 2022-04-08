@@ -1,3 +1,5 @@
+#pragma once
+
 #include "user.h"
 
 class UserDatabase {
@@ -7,11 +9,15 @@ class UserDatabase {
         bool doExist(string);
         bool AuthenticateUser(string, string);
         void ListAllUsers();
+        int GetUserType(string);
 
         void Add(string, string, string, int);
         void Update(string, string, string, int);
         void Delete(string);
         void ShowDetails(string);
+        void ShowIssuedBooks(string);
+        bool IsUserAllowedToIssue(string);
+        void AddBookToUser(string, Book);
         User* Search(string);
 
     private:
@@ -22,24 +28,4 @@ class UserDatabase {
 
 };
 
-/*
-
-class UserDatabase {
-    public:
-        friend class Librarian;
-
-        unordered_map<string, User> users_list;
-
-        bool doExist(string);
-        User* AuthenticateUser(string, string);
-        void ListAllUsers();
-
-        void Add(string, string, string, int);
-        void Update();
-        void Delete();
-        User* Search(string);
-
-};
-
-*/
 
