@@ -6,11 +6,6 @@ void User::SetPassword(string password) {
     this->password = password;
 }
 
-
-int Student::calculate_fine() {
-    return 0;
-}
-
 void Student::clear_fine_amount() {
     if (this->fine_amount == 0) throw "Fine amount of the user is already null";
     
@@ -42,10 +37,16 @@ void Student::AddBook(Book book) {
     books_num++;
 }
 
+int Student::CalculateFine() {
+    int total_fine = 0;
 
-int Professor::calculate_fine() {
-    return 0;
-}   
+    for(auto book: list_of_books) {
+        total_fine += book.CalculateFine(0);
+    }
+
+    return total_fine;
+}
+
 
 void Professor::clear_fine_amount() {
     if (this->fine_amount == 0) throw "Fine amount of the user is already null";
@@ -70,4 +71,14 @@ void Professor::ShowDetails() {
 
 void Professor::AddBook(Book book) {
     list_of_books.push_back(book);
+}
+
+int Professor::CalculateFine() {
+    int total_fine = 0;
+
+    for(auto book: list_of_books) {
+        total_fine += book.CalculateFine(1);
+    }
+
+    return total_fine;
 }

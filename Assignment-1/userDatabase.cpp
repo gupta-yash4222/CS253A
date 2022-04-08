@@ -189,6 +189,7 @@ void UserDatabase::ListAllUsers() {
         cout << "Professor #" << (count++) << endl;
         cout << "ID - " << itr->first << endl;
         cout << "Name - " << itr->second.name << endl;
+        cout << "Cumulated Fine - " << itr->second.CalculateFine() << endl;
         cout << "\n" << endl;
     }
 
@@ -206,6 +207,7 @@ void UserDatabase::ListAllUsers() {
         cout << "Student #" << (count++) << endl;
         cout << "ID - " << itr->first << endl;
         cout << "Name - " << itr->second.name << endl;
+        cout << "Cumulated Fine - " << itr->second.CalculateFine() << endl;
         cout << "\n" << endl;
     }
 

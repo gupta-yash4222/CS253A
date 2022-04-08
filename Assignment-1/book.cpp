@@ -2,6 +2,10 @@
 #include "book.h"
 using namespace std;
 
+int FINE[2] = {2, 5};
+
+int MONTH_DAYS[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
 
 void Book::SetParams(string name, string author, string isbn, string publication) {
     this->name = name; this->author = author; this->isbn = isbn; this->publication = publication;
@@ -31,9 +35,11 @@ void Book::ShowDetails(int reqType) {
         cout << "The book is not issued to anyone yet." << endl;
     }
 
-    else cout << "The book is issued to - " << issuedTo << endl;
-    cout << "The book was issued on - " << issuedAt.dd << "/" << issuedAt.mm << "/" << issuedAt.yy << endl;
-    cout << "Due date of the book is - " << dueDate.dd << "/" << dueDate.mm << "/" << dueDate.yy << endl;
+    else{
+        cout << "The book is issued to - " << issuedTo << endl;
+        cout << "The book was issued on - " << issuedAt.dd << "/" << issuedAt.mm << "/" << issuedAt.yy << endl;
+        cout << "Due date of the book is - " << dueDate.dd << "/" << dueDate.mm << "/" << dueDate.yy << endl;
+    } 
 }
 
 void Book::book_request(string user_id, int userType) {
@@ -46,21 +52,35 @@ void Book::book_request(string user_id, int userType) {
     time_t now = time(0);
     tm* ltm = localtime( &now );
     currentTime.dd = ltm -> tm_mday;
-    currentTime.mm = ltm -> tm_mon;
-    currentTime.yy = ltm -> tm_year;
+    currentTime.mm = 1 + ltm -> tm_mon;
+    currentTime.yy = 1900 + ltm -> tm_year;
+    currentTime.now = now;
 
     this->issuedAt = currentTime;
 
     if(userType == 0) now += (30 * 24 * 60 * 60);
     else now += (60 * 24 * 60 * 60);
 
-    tm * ltm = localtime( &now );
-    dueTime.dd = ltm -> tm_mday;
-    dueTime.mm = ltm -> tm_mon;
-    dueTime.yy = ltm -> tm_year;
+    tm * ltm1 = localtime( &now );
+    dueTime.dd = ltm1 -> tm_mday;
+    dueTime.mm = 1 + ltm1 -> tm_mon;
+    dueTime.yy = 1900 + ltm1 -> tm_year;
+    dueTime.now = now;
 
     this->dueDate = dueTime;
 
 
+}
+
+int Book::CalculateFine(int userType) {
+
+    time_t now = time(0);
+    if(now >= (this->dueDate).now ) return 0;
+
+    time_t diff = now - (this->dueDate).now;
+    tm* ltm = localtime ( &now );
+    int days = (ltm -> tm_mday) + (MONTH_DAYS[ltm -> tm_mon] * (ltm -> tm_mon)) + (365 * (ltm -> tm_year));
+
+    return (days * FINE[userType]);
 }
 

@@ -44,7 +44,7 @@ class Librarian: public User {
 
 class Professor: public User {
     public:
-        int calculate_fine();
+        int CalculateFine();
         friend class Librarian;
 
         void SetParams(string name, string id, string password, int userType) {
@@ -66,7 +66,7 @@ class Professor: public User {
 
 class Student: public User {
     public: 
-        int calculate_fine();
+        int CalculateFine();
         friend class Librarian;
 
         void SetParams(string name, string id, string password, int userType) {
