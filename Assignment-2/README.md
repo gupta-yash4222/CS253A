@@ -1,0 +1,1 @@
+Bash Tip: We can use a variable value inside a command by dereferencing it inside single quotes eg., `'${var-name}'`
