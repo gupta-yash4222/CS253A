@@ -23,7 +23,7 @@ printAverAdmissionRate() {
             {
                 if($6 == "'$(echo $geo)'") { rate+=$7; count++ }    
             }
-            END {print "'$(echo $geo)'",rate/count}
+            END {print "'$(echo $geo)':",rate/count}
         ' $1 >> $2
     done    
     
