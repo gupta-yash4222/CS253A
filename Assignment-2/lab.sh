@@ -4,10 +4,6 @@ printFields() {
     awk -F',' '{print $1,$2,$3,$5,$6,$7,$10,$11}' $1 > $2
 }
 
-print() {
-    print $1
-}
-
 printHighestDegree() {
     awk -F',' '{ if($3 == "Bachelor'"'"'s") print $1}' $1 >> $2
 }
@@ -35,7 +31,7 @@ printAverAdmissionRate() {
 
 printTopMedEarning() {
 
-    sort -k16 -n -t, -r $1 | awk 'NR<=5 {print $1}' >> $2
+    sort -k16 -n -t, -r $1 | awk -F',' 'NR<=5 {print $1}' >> $2
 
 }
 
